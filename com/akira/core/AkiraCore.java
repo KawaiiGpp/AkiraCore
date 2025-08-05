@@ -1,6 +1,6 @@
 package com.akira.core;
 
-import com.akira.core.utils.base.AkiraPlugin;
+import com.akira.core.api.AkiraPlugin;
 import org.apache.commons.lang3.Validate;
 
 public class AkiraCore extends AkiraPlugin {

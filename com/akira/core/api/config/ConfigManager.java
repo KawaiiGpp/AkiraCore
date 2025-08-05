@@ -1,8 +1,7 @@
-package com.akira.core.managers;
+package com.akira.core.api.config;
 
-import com.akira.core.utils.base.ConfigFile;
-import com.akira.core.utils.base.Manager;
-import com.akira.core.utils.tool.CommonUtils;
+import com.akira.core.api.Manager;
+import com.akira.core.api.util.CommonUtils;
 import org.apache.commons.lang3.Validate;
 
 public class ConfigManager extends Manager<ConfigFile> {

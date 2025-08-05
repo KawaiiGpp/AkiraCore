@@ -1,4 +1,4 @@
-package com.akira.core.utils.tool;
+package com.akira.core.api.util;
 
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;

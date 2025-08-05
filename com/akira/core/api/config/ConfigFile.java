@@ -1,6 +1,7 @@
-package com.akira.core.utils.base;
+package com.akira.core.api.config;
 
-import com.akira.core.utils.tool.CommonUtils;
+import com.akira.core.api.AkiraPlugin;
+import com.akira.core.api.util.CommonUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.configuration.file.YamlConfiguration;
 

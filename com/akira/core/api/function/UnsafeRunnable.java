@@ -1,4 +1,4 @@
-package com.akira.core.utils.func;
+package com.akira.core.api.function;
 
 @FunctionalInterface
 public interface UnsafeRunnable {

@@ -1,7 +1,7 @@
-package com.akira.core.utils.tool;
+package com.akira.core.api.util;
 
-import com.akira.core.utils.base.AkiraPlugin;
-import com.akira.core.utils.func.UnsafeRunnable;
+import com.akira.core.api.AkiraPlugin;
+import com.akira.core.api.function.UnsafeRunnable;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
