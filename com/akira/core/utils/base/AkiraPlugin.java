@@ -1,11 +1,33 @@
 package com.akira.core.utils.base;
 
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AkiraPlugin extends JavaPlugin {
+    public final void logInfo(String message) {
+        log("INFO", ChatColor.GREEN, message);
+    }
+
+    public final void logWarn(String message) {
+        log("WARN", ChatColor.YELLOW, message);
+    }
+
+    public final void logErr(String message) {
+        log("ERR", ChatColor.RED, message);
+    }
+
+    protected final void log(String prefix, ChatColor color, String message) {
+        Validate.notNull(prefix);
+        Validate.notNull(color);
+        Validate.notNull(message);
+
+        String tag = color + "[" + this.getName() + "] [" + prefix + "] ";
+        Bukkit.getConsoleSender().sendMessage(tag + message);
+    }
+
     public void onLoad() {
         logInfo("欢迎使用 " + this.getName() + "，插件正在加载。");
     }
@@ -21,22 +43,5 @@ public class AkiraPlugin extends JavaPlugin {
     public void onDisable() {
         logInfo("插件 " + this.getName() + " 已卸载。");
         logInfo("感谢你的使用，期待我们下次见面！");
-    }
-
-    public void logInfo(String message) {
-        log("INFO", ChatColor.GREEN, message);
-    }
-
-    public void logWarn(String message) {
-        log("WARN", ChatColor.YELLOW, message);
-    }
-
-    public void logErr(String message) {
-        log("ERR", ChatColor.RED, message);
-    }
-
-    protected void log(String prefix, ChatColor color, String message) {
-        String tag = color + "[" + this.getName() + "] [" + prefix + "] ";
-        Bukkit.getConsoleSender().sendMessage(tag + message);
     }
 }
