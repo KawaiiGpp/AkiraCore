@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AkiraPlugin extends JavaPlugin {
+public abstract class AkiraPlugin extends JavaPlugin {
     public final void logInfo(String message) {
         log("INFO", ChatColor.GREEN, message);
     }
