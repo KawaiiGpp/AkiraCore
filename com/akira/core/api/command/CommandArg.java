@@ -30,6 +30,10 @@ public class CommandArg {
         }
     }
 
+    public String getFormattedText() {
+        return literal ? text : '<' + text + '>';
+    }
+
     public String getText() {
         return text;
     }

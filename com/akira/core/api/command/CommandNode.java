@@ -34,35 +34,44 @@ public abstract class CommandNode {
         this.limit = limit;
     }
 
-    public void execute(CommandSender sender, String[] args) {
+    public final boolean execute(CommandSender sender, String[] args) {
         Validate.isTrue(args.length == arguments.length);
-        this.onExecute(sender, this.filterNonLiteralArgs(args));
+        return this.onExecute(sender, this.filterNonLiteralArgs(args));
     }
 
-    public CommandArg[] getArguments() {
+    public final CommandArg[] getArguments() {
         return arguments.clone();
     }
 
-    public SenderLimit getLimit() {
+    public final SenderLimit getLimit() {
         return limit;
     }
 
-    public String getRoot() {
+    public final String getRoot() {
         return root;
     }
 
-    public String generateUsage() {
+    public final String generateUsage() {
         StringBuilder builder = new StringBuilder();
-        builder.append("用法：").append('/').append(root);
+        builder.append('/').append(root);
 
         for (CommandArg arg : arguments) {
             builder.append(' ');
-
-            if (arg.isLiteral()) builder.append(arg.getText());
-            else builder.append('<').append(arg.getText()).append('>');
+            builder.append(arg.getFormattedText());
         }
 
         return builder.toString();
+    }
+
+    public final boolean matches(String[] args) {
+        Validate.noNullElements(args);
+
+        if (args.length != arguments.length)
+            return false;
+
+        return IntStream.range(0, arguments.length)
+                .filter(i -> arguments[i].isLiteral())
+                .allMatch(i -> arguments[i].getText().equals(args[i]));
     }
 
     private Set<Integer> getNonLiteralIndexes() {
@@ -73,7 +82,6 @@ public abstract class CommandNode {
     }
 
     private String[] filterNonLiteralArgs(String[] args) {
-        Validate.notNull(args);
         Validate.noNullElements(args);
 
         Set<Integer> indexes = this.getNonLiteralIndexes();
@@ -89,5 +97,5 @@ public abstract class CommandNode {
         return result.toArray(new String[0]);
     }
 
-    protected abstract void onExecute(CommandSender sender, String[] args);
+    protected abstract boolean onExecute(CommandSender sender, String[] args);
 }
