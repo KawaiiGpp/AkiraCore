@@ -14,10 +14,12 @@ public abstract class CommandNode {
     protected final String root;
     protected final CommandArg[] arguments;
     protected final SenderLimit limit;
+    protected final String description;
 
-    public CommandNode(String root, SenderLimit limit, String rawArgs) {
+    public CommandNode(String root, SenderLimit limit, String rawArgs, String description) {
         Validate.notNull(root);
         Validate.notNull(limit);
+        Validate.notNull(description);
 
         String[] args;
         if (rawArgs != null && !rawArgs.isBlank()) {
@@ -32,6 +34,7 @@ public abstract class CommandNode {
                 .map(CommandArg::new)
                 .toArray(CommandArg[]::new);
         this.limit = limit;
+        this.description = description;
     }
 
     public final boolean execute(CommandSender sender, String[] args) {
@@ -49,6 +52,10 @@ public abstract class CommandNode {
 
     public final String getRoot() {
         return root;
+    }
+
+    public final String getDescription() {
+        return description;
     }
 
     public final String generateUsage() {

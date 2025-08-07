@@ -16,6 +16,7 @@ public class CommandHandler {
 
         this.root = root;
         this.nodes = new ArrayList<>();
+        this.registerHelpCommanmd();
     }
 
     public void register(CommandNode node) {
@@ -56,5 +57,34 @@ public class CommandHandler {
     private CommandNode getMatchingNode(String[] args) {
         Validate.notNull(args);
         return CommonUtils.singleMatch(nodes.stream(), n -> n.matches(args), false);
+    }
+
+    private void registerHelpCommanmd() {
+        CommandNode node = new CommandNode(
+                root,
+                SenderLimit.NONE,
+                "help",
+                "列出所有可用的子指令"
+        ) {
+            protected boolean onExecute(CommandSender sender, String[] args) {
+                String line = "§8" + CommonUtils.generateLine(20);
+
+                sender.sendMessage(line);
+                sender.sendMessage("§f关于 §e/" + root + " §f的所有可用指令：");
+
+                for (CommandNode node : nodes) {
+                    if (!node.getLimit().allow(sender))
+                        continue;
+
+                    sender.sendMessage("§8- §2" + node.generateUsage());
+                    sender.sendMessage("§8- >> §7" + node.getDescription());
+                }
+
+                sender.sendMessage(line);
+                return true;
+            }
+        };
+
+        this.register(node);
     }
 }
