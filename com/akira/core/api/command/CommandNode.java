@@ -81,6 +81,31 @@ public abstract class CommandNode {
                 .allMatch(i -> arguments[i].getText().equals(args[i]));
     }
 
+    public final boolean shouldSuggest(String[] args) {
+        Validate.noNullElements(args);
+
+        if (args.length > arguments.length)
+            return false;
+
+        for (int i = 0; i < args.length; i++) {
+            CommandArg commandArg = arguments[i];
+            if (!commandArg.isLiteral()) continue;
+
+            String arg = args[i];
+            String argument = commandArg.getText();
+
+            if (i != args.length - 1) {
+                if (!argument.equals(arg))
+                    return false;
+            } else {
+                if (!argument.startsWith(arg))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     private Set<Integer> getNonLiteralIndexes() {
         return IntStream.range(0, arguments.length)
                 .filter(i -> !arguments[i].isLiteral())

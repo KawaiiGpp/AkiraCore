@@ -46,6 +46,17 @@ public class CommandHandler {
         if (!success) sender.sendMessage("§c用法：" + node.generateUsage());
     }
 
+    public List<String> complete(CommandSender sender, String[] args) {
+        Validate.notNull(sender);
+        Validate.noNullElements(args);
+        Validate.isTrue(args.length > 0, "Illegal length of command args.");
+
+        int lastIndex = args.length - 1;
+        return this.getSuggestedNode(sender, args).stream()
+                .map(n -> n.getArguments()[lastIndex].getText())
+                .toList();
+    }
+
     public String getRoot() {
         return root;
     }
@@ -55,8 +66,18 @@ public class CommandHandler {
     }
 
     private CommandNode getMatchingNode(String[] args) {
-        Validate.notNull(args);
+        Validate.noNullElements(args);
         return CommonUtils.singleMatch(nodes.stream(), n -> n.matches(args), false);
+    }
+
+    private List<CommandNode> getSuggestedNode(CommandSender sender, String[] args) {
+        Validate.notNull(sender);
+        Validate.noNullElements(args);
+
+        return nodes.stream()
+                .filter(n -> n.getLimit().allow(sender))
+                .filter(n -> n.shouldSuggest(args))
+                .toList();
     }
 
     private void registerHelpCommanmd() {
@@ -67,7 +88,7 @@ public class CommandHandler {
                 "列出所有可用的子指令"
         ) {
             protected boolean onExecute(CommandSender sender, String[] args) {
-                String line = "§8" + CommonUtils.generateLine(20);
+                String line = "§8" + CommonUtils.generateLine(45);
 
                 sender.sendMessage(line);
                 sender.sendMessage("§f关于 §e/" + root + " §f的所有可用指令：");
