@@ -16,7 +16,7 @@ public class CommandHandler {
 
         this.root = root;
         this.nodes = new ArrayList<>();
-        this.registerHelpCommanmd();
+        this.registerHelpCommand();
     }
 
     public void register(CommandNode node) {
@@ -80,7 +80,7 @@ public class CommandHandler {
                 .toList();
     }
 
-    private void registerHelpCommanmd() {
+    private void registerHelpCommand() {
         CommandNode node = new CommandNode(
                 root,
                 SenderLimit.NONE,
@@ -88,10 +88,11 @@ public class CommandHandler {
                 "列出所有可用的子指令"
         ) {
             protected boolean onExecute(CommandSender sender, String[] args) {
-                String line = "§8" + CommonUtils.generateLine(45);
+                String line = "§8" + CommonUtils.generateLine(40);
 
                 sender.sendMessage(line);
                 sender.sendMessage("§f关于 §e/" + root + " §f的所有可用指令：");
+                sender.sendMessage("");
 
                 for (CommandNode node : nodes) {
                     if (!node.getLimit().allow(sender))

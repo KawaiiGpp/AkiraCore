@@ -58,7 +58,7 @@ public class CommonUtils {
     public static String generateLine(int length) {
         Validate.isTrue(length > 0, "Length must be greater than 0.");
         StringBuilder builder = new StringBuilder();
-        IntStream.range(0, length).forEach(i -> builder.append('-'));
+        IntStream.range(0, length).forEach(i -> builder.append('▬'));
         return builder.toString();
     }
 }

@@ -1,8 +1,11 @@
 package com.akira.core.api;
 
+import com.akira.core.api.command.EnhancedExecutor;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,6 +29,21 @@ public abstract class AkiraPlugin extends JavaPlugin {
 
         String tag = color + "[" + this.getName() + "] [" + prefix + "] ";
         Bukkit.getConsoleSender().sendMessage(tag + message);
+    }
+
+    public final void registerCommand(EnhancedExecutor executor) {
+        Validate.notNull(executor);
+
+        String name = executor.getName();
+        PluginCommand command = this.getCommand(name);
+        Validate.notNull(command, "Command " + name + " doesn't exist.");
+
+        command.setExecutor(executor);
+    }
+
+    public final void registerListener(Listener listener) {
+        Validate.notNull(listener);
+        Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
     public void onLoad() {

@@ -1,10 +1,8 @@
 package com.akira.core.api.util;
 
-import com.akira.core.api.command.EnhancedExecutor;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.PluginCommand;
 
 public class BukkitUtils {
     public static void debug(Object object) {
@@ -45,15 +43,5 @@ public class BukkitUtils {
     public static void bc(String message) {
         Validate.notNull(message);
         Bukkit.broadcastMessage(message);
-    }
-
-    public static void registerCommand(EnhancedExecutor executor) {
-        Validate.notNull(executor);
-
-        String name = executor.getName();
-        PluginCommand command = Bukkit.getPluginCommand(name);
-        Validate.notNull(command, "Command " + name + " doesn't exist.");
-
-        command.setExecutor(executor);
     }
 }
