@@ -21,7 +21,7 @@ public class NumberUtils {
         Validate.notNull(raw);
 
         try {
-            return Double.parseDouble(raw);
+            return requireLegit(Double.parseDouble(raw));
         } catch (NumberFormatException e) {
             return null;
         }
@@ -29,5 +29,29 @@ public class NumberUtils {
 
     public static DecimalFormat getDefaultFormatter() {
         return defaultFormatter;
+    }
+
+    public static void ensureLegit(double d) {
+        Validate.notNaN(d, "Argument must not be NaN.");
+        Validate.isTrue(!Double.isInfinite(d), "Argument must not be Infinite.");
+    }
+
+    public static double requireLegit(double d) {
+        ensureLegit(d);
+        return d;
+    }
+
+    public static int clamp(int num, int min, int max) {
+        Validate.isTrue(min < max);
+        return Math.min(Math.max(min, num), max);
+    }
+
+    public static double clamp(double num, double min, double max) {
+        ensureLegit(num);
+        ensureLegit(min);
+        ensureLegit(max);
+
+        Validate.isTrue(min < max);
+        return Math.min(Math.max(min, num), max);
     }
 }

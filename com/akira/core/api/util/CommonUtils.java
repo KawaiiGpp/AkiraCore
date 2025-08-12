@@ -6,11 +6,14 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class CommonUtils {
+    private static final Random random = new Random();
+
     public static void runUnsafe(AkiraPlugin plugin, UnsafeRunnable runnable) {
         Validate.notNull(plugin);
         Validate.notNull(runnable);
@@ -60,5 +63,18 @@ public class CommonUtils {
         StringBuilder builder = new StringBuilder();
         IntStream.range(0, length).forEach(i -> builder.append('▬'));
         return builder.toString();
+    }
+
+    public static Random getRandom() {
+        return random;
+    }
+
+    public static boolean rollChance(int chance) {
+        Validate.isTrue(chance >= 0 && chance <= 100);
+
+        if (chance == 0) return false;
+        if (chance == 100) return true;
+
+        return random.nextInt(100) < chance;
     }
 }
