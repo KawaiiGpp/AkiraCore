@@ -15,7 +15,7 @@ public class ItemBuilder {
     private final ItemStack item;
     private final ItemMeta meta;
 
-    public ItemBuilder(Material material) {
+    private ItemBuilder(Material material) {
         Validate.notNull(material);
         Validate.isTrue(material.isItem(), "Unobtainable material: " + material);
 
@@ -76,5 +76,22 @@ public class ItemBuilder {
 
         result.setItemMeta(meta);
         return result;
+    }
+
+    public static ItemBuilder create(Material material) {
+        return new ItemBuilder(material);
+    }
+
+    public static ItemStack buildMenuItem(Material material, String displayName, int amount, String... lore) {
+        return create(material)
+                .setDisplayName(displayName)
+                .setAmount(amount)
+                .setLore(lore)
+                .addFlags(ItemFlag.values())
+                .getResult();
+    }
+
+    public static ItemStack buildMenuItem(Material material, String displayName, String... lore) {
+        return buildMenuItem(material, displayName, 1, lore);
     }
 }
