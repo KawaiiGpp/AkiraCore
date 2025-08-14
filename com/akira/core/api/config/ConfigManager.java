@@ -13,9 +13,9 @@ public class ConfigManager extends Manager<ConfigFile> {
         elements.forEach(ConfigFile::save);
     }
 
-    public ConfigFile fromString(String string) {
-        Validate.notNull(string);
+    public ConfigFile fromString(String name) {
+        Validate.notNull(name);
         return CommonUtils.singleMatch(elements.stream(),
-                e -> string.equals(e.getName()));
+                e -> name.equals(e.getName()));
     }
 }
