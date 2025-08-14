@@ -14,6 +14,7 @@ import java.util.List;
 public class ItemBuilder {
     private final ItemStack item;
     private final ItemMeta meta;
+    private boolean unsafeAmount;
 
     private ItemBuilder(Material material) {
         Validate.notNull(material);
@@ -21,11 +22,13 @@ public class ItemBuilder {
 
         this.item = new ItemStack(material);
         this.meta = item.getItemMeta();
+        this.unsafeAmount = false;
     }
 
     public ItemBuilder setAmount(int amount) {
+        int max = item.getMaxStackSize();
         Validate.isTrue(amount > 0);
-        Validate.isTrue(amount <= item.getMaxStackSize(), "Max stack size limited: " + amount);
+        Validate.isTrue(unsafeAmount || amount <= max, "Max stack size limited: " + amount);
 
         item.setAmount(amount);
         return this;
@@ -71,6 +74,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setUnsafeAmount(boolean b) {
+        this.unsafeAmount = b;
+        return this;
+    }
+
     public ItemStack getResult() {
         ItemStack result = item.clone();
 
@@ -82,16 +90,14 @@ public class ItemBuilder {
         return new ItemBuilder(material);
     }
 
-    public static ItemStack buildMenuItem(Material material, String displayName, int amount, String... lore) {
-        return create(material)
-                .setDisplayName(displayName)
+    public static ItemStack buildMenuItem(Material material, String name, int amount, String... lore) {
+        ItemBuilder builder = create(material)
+                .setUnsafeAmount(true)
+                .setDisplayName(name)
                 .setAmount(amount)
-                .setLore(lore)
-                .addFlags(ItemFlag.values())
-                .getResult();
-    }
+                .addFlags(ItemFlag.values());
+        if (lore.length > 0) builder = builder.setLore(lore);
 
-    public static ItemStack buildMenuItem(Material material, String displayName, String... lore) {
-        return buildMenuItem(material, displayName, 1, lore);
+        return builder.getResult();
     }
 }

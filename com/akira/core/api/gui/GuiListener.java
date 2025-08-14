@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 public abstract class GuiListener implements Listener {
-    private final GuiManager manager;
+    protected final GuiManager manager;
 
     public GuiListener(GuiManager manager) {
         Validate.notNull(manager);
@@ -35,9 +35,9 @@ public abstract class GuiListener implements Listener {
         }
     }
 
-    public abstract void onExceptionCaught(Exception exception);
+    protected abstract void onExceptionCaught(Exception exception);
 
-    public abstract boolean shouldHandleEvent(InventoryClickEvent event);
+    protected abstract boolean shouldHandleEvent(InventoryClickEvent event);
 
-    public abstract boolean shouldCallGui(InventoryClickEvent event);
+    protected abstract boolean shouldCallGui(InventoryClickEvent event);
 }
