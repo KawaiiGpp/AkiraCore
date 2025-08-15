@@ -53,7 +53,9 @@ public class CommandHandler {
 
         int lastIndex = args.length - 1;
         return this.getSuggestedNode(sender, args).stream()
-                .map(n -> n.getArguments()[lastIndex].getText())
+                .map(n -> n.getArguments()[lastIndex])
+                .filter(CommandArg::isLiteral)
+                .map(CommandArg::getText)
                 .toList();
     }
 
@@ -88,7 +90,7 @@ public class CommandHandler {
                 "列出所有可用的子指令"
         ) {
             protected boolean onExecute(CommandSender sender, String[] args) {
-                String line = "§8" + CommonUtils.generateLine(40);
+                String line = "§8" + CommonUtils.generateLine(55);
 
                 sender.sendMessage(line);
                 sender.sendMessage("§f关于 §e/" + root + " §f的所有可用指令：");
