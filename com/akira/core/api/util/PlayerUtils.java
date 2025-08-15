@@ -17,8 +17,7 @@ public class PlayerUtils {
         Validate.notNull(sound);
         Validate.isTrue(pitch >= 0.0F && pitch <= 1.0F);
 
-        World world = player.getLocation().getWorld();
-        Validate.notNull(world, "World instance from player's location is null.");
+        World world = CommonUtils.requireNonNull(player.getLocation().getWorld());
         world.playSound(player, sound, 1.0F, pitch);
     }
 
@@ -35,8 +34,7 @@ public class PlayerUtils {
         Validate.notNull(effect);
         Validate.isTrue(radius >= 0, "Radius cannot be lower than 0.");
 
-        World world = location.getWorld();
-        Validate.notNull(world, "World from the location instance is null.");
+        World world = CommonUtils.requireNonNull(location.getWorld());
         world.playEffect(location, effect, data, radius);
     }
 
