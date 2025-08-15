@@ -54,4 +54,14 @@ public class NumberUtils {
         Validate.isTrue(min < max);
         return Math.min(Math.max(min, num), max);
     }
+
+    public static void ensurePositive(double d) {
+        ensureLegit(d);
+        Validate.isTrue(d > 0, "Argument must be greater than 0.");
+    }
+
+    public static void ensureNonNegative(double d) {
+        ensureLegit(d);
+        Validate.isTrue(d >= 0, "Argument must not be lower than 0.");
+    }
 }

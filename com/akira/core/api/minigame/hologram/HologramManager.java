@@ -1,4 +1,4 @@
-package com.akira.core.api.hologram;
+package com.akira.core.api.minigame.hologram;
 
 import com.akira.core.api.Manager;
 import com.akira.core.api.util.CommonUtils;

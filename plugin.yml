@@ -1,5 +1,5 @@
 name: AkiraCore
-version: 1.3.1
+version: 1.3.2
 main: com.akira.core.AkiraCore
 authors: [Yukino_Akira]
 api-version: 1.20

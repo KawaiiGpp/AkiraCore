@@ -1,4 +1,4 @@
-package com.akira.core.api.hologram;
+package com.akira.core.api.minigame.hologram;
 
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Location;

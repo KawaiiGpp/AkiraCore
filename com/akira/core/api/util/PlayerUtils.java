@@ -1,12 +1,15 @@
 package com.akira.core.api.util;
 
 import org.apache.commons.lang3.Validate;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.UUID;
+import java.util.function.Consumer;
+
+@SuppressWarnings("deprecation")
 public class PlayerUtils {
     public static void playSound(Player player, Sound sound, float pitch) {
         NumberUtils.ensureLegit(pitch);
@@ -43,5 +46,42 @@ public class PlayerUtils {
 
     public static <T> void playEffect(Player player, Effect effect, T data) {
         playEffect(player.getLocation(), effect, data);
+    }
+
+    public static boolean isLegitName(String name) {
+        Validate.notNull(name);
+        return name.matches("^[A-Za-z0-9_]{3,16}$");
+    }
+
+    public static UUID getUniqueId(String name) {
+        Validate.notNull(name);
+        Validate.isTrue(isLegitName(name), "Invalid username.");
+
+        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+        return player.hasPlayedBefore() ? player.getUniqueId() : null;
+    }
+
+    public static void fetchUniqueId(JavaPlugin plugin, String name, Consumer<UUID> callback, Consumer<Exception> solver) {
+        Validate.notNull(plugin);
+        Validate.notNull(name);
+        Validate.notNull(callback);
+        Validate.notNull(solver);
+        Validate.isTrue(isLegitName(name), "Invalid username.");
+
+        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+
+        scheduler.runTaskAsynchronously(plugin, () -> {
+            UUID result;
+
+            try {
+                result = player.getUniqueId();
+            } catch (Exception exception) {
+                solver.accept(exception);
+                return;
+            }
+
+            scheduler.runTask(plugin, () -> callback.accept(result));
+        });
     }
 }
