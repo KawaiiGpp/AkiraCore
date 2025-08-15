@@ -1,5 +1,8 @@
 package com.akira.core.api.util;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -81,5 +84,18 @@ public class PlayerUtils {
 
             scheduler.runTask(plugin, () -> callback.accept(result));
         });
+    }
+
+    public static void sendTitle(Player player, String title, String subTitle) {
+        Validate.notNull(player);
+        player.sendTitle(title, subTitle, 10, 80, 10);
+    }
+
+    public static void sendActionBarTitle(Player player, String title) {
+        Validate.notNull(player);
+        Validate.notNull(title);
+
+        BaseComponent[] components = TextComponent.fromLegacyText(title);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, components);
     }
 }
