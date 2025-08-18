@@ -81,8 +81,20 @@ public class CommonUtils {
         return random.nextInt(100) < chance;
     }
 
+    public static void ensureLegitLocation(Location location) {
+        Validate.notNull(location);
+        Validate.notNull(location.getWorld());
+
+        NumberUtils.ensureLegit(location.getX());
+        NumberUtils.ensureLegit(location.getY());
+        NumberUtils.ensureLegit(location.getZ());
+        NumberUtils.ensureLegit(location.getYaw());
+        NumberUtils.ensureLegit(location.getPitch());
+    }
+
     public static String serializeLocation(Location location) {
         Validate.notNull(location);
+        ensureLegitLocation(location);
 
         StringBuilder builder = new StringBuilder();
         World world = CommonUtils.requireNonNull(location.getWorld());
@@ -110,6 +122,13 @@ public class CommonUtils {
             double z = Double.parseDouble(rawArray[3]);
             float yaw = Float.parseFloat(rawArray[4]);
             float pitch = Float.parseFloat(rawArray[5]);
+
+            Validate.notNull(world);
+            NumberUtils.ensureLegit(x);
+            NumberUtils.ensureLegit(y);
+            NumberUtils.ensureLegit(z);
+            NumberUtils.ensureLegit(yaw);
+            NumberUtils.ensureLegit(pitch);
 
             return new Location(world, x, y, z, yaw, pitch);
         } catch (Exception e) {
