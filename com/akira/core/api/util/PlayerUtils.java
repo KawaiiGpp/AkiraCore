@@ -18,7 +18,7 @@ public class PlayerUtils {
         NumberUtils.ensureLegit(pitch);
         Validate.notNull(player);
         Validate.notNull(sound);
-        Validate.isTrue(pitch >= 0.0F && pitch <= 1.0F);
+        Validate.isTrue(pitch >= 0.5F && pitch <= 2.0F);
 
         World world = CommonUtils.requireNonNull(player.getLocation().getWorld());
         world.playSound(player, sound, 1.0F, pitch);
