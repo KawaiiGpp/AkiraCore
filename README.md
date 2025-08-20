@@ -10,8 +10,6 @@
 - 提供`Manager`类方便对成员的统一管理；
 - 提供与配置文件相关的管理工具：`ConfigFile`与`ConfigManager`；
 - 提供大量实用的静态方法在`CommonUtils`、`BukkitUtils`等类中；
-
-## 画大饼时间
-- [x] 提供一个简单易用的GUI界面框架
-- [x] 内置一套轻量化的升级系统逻辑
-- [x] 提供一个简易的全息文本显示的框架
+- 提供简易GUI框架：由`Gui`、`GuiItem`、`GuiManager`等类组成；
+- 内置升级系统的基础逻辑：`LevelData`；
+- 内置简易全息文本显示框架：`Hologram`、`HologramManager`。
