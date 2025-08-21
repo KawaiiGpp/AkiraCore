@@ -2,6 +2,8 @@ package com.akira.core.api.util;
 
 import org.apache.commons.lang3.Validate;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class NumberUtils {
@@ -29,6 +31,37 @@ public class NumberUtils {
 
     public static DecimalFormat getDefaultFormatter() {
         return defaultFormatter;
+    }
+
+    public static String format(double d) {
+        ensureLegit(d);
+        return defaultFormatter.format(d);
+    }
+
+    public static double simplify(double d, int scale) {
+        ensureLegit(d);
+        ensurePositive(scale);
+
+        return BigDecimal.valueOf(d)
+                .setScale(scale, RoundingMode.HALF_UP)
+                .doubleValue();
+    }
+
+    public static double simplify(double d) {
+        return simplify(d, 2);
+    }
+
+    public static float simplify(float f, int scale) {
+        ensureLegit(f);
+        ensurePositive(scale);
+
+        return BigDecimal.valueOf(f)
+                .setScale(scale, RoundingMode.HALF_UP)
+                .floatValue();
+    }
+
+    public static float simplify(float f) {
+        return simplify(f, 2);
     }
 
     public static void ensureLegit(double d) {
