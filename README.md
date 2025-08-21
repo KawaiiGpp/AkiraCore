@@ -11,5 +11,6 @@
 - 提供与配置文件相关的管理工具：`ConfigFile`与`ConfigManager`；
 - 提供大量实用的静态方法在`CommonUtils`、`BukkitUtils`等类中；
 - 提供简易GUI框架：由`Gui`、`GuiItem`、`GuiManager`等类组成；
-- 内置升级系统的基础逻辑：`LevelData`；
-- 内置简易全息文本显示框架：`Hologram`、`HologramManager`。
+- 提供升级系统的基础逻辑：`LevelData`；
+- 提供简易全息文本显示框架：`Hologram`、`HologramManager`；
+- 提供物品管理工具：`ItemBuilder`、`ItemTagEditor`。
