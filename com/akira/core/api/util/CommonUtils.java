@@ -57,6 +57,17 @@ public class CommonUtils {
         return singleMatch(stream, predicate, true);
     }
 
+    public static <T extends Enum<T>> T getEnumSafely(Class<T> enumClazz, String name) {
+        Validate.notNull(enumClazz);
+        Validate.notNull(name);
+
+        try {
+            return Enum.valueOf(enumClazz, name);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     public static <T> T requireNonNull(T t) {
         return Objects.requireNonNull(t, "Argument must not be null.");
     }
