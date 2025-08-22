@@ -7,9 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -145,5 +143,22 @@ public class CommonUtils {
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed parsing location: " + raw);
         }
+    }
+
+    public static <T> List<T> getRandomElement(Collection<T> collection, int amount) {
+        Validate.notNull(collection);
+        NumberUtils.ensurePositive(amount);
+
+        List<T> arrayList = new ArrayList<>(collection);
+        Collections.shuffle(arrayList);
+
+        return arrayList.subList(0, Math.min(amount, arrayList.size()));
+    }
+
+    public static <T> List<T> getRandomElement(T[] array, int amount) {
+        Validate.notNull(array);
+        NumberUtils.ensureLegit(amount);
+
+        return getRandomElement(Arrays.asList(array), amount);
     }
 }
