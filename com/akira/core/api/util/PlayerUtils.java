@@ -42,10 +42,14 @@ public class PlayerUtils {
     }
 
     public static <T> void playEffect(Player player, Effect effect, T data, int radius) {
+        Validate.notNull(player);
+
         playEffect(player.getLocation(), effect, data, radius);
     }
 
     public static <T> void playEffect(Player player, Effect effect, T data) {
+        Validate.notNull(player);
+
         playEffect(player.getLocation(), effect, data);
     }
 
