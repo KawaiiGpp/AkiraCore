@@ -9,9 +9,23 @@ public class EntityUtils {
     public static double getMaxHealth(LivingEntity entity) {
         Validate.notNull(entity);
 
-        AttributeInstance attribute = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        Validate.notNull(attribute);
+        return getNonNullAttribute(entity, Attribute.GENERIC_MAX_HEALTH).getValue();
+    }
 
-        return attribute.getValue();
+    public static void setMaxHealth(LivingEntity entity, double maxHealth) {
+        Validate.notNull(entity);
+        NumberUtils.ensurePositive(maxHealth);
+
+        getNonNullAttribute(entity, Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
+    }
+
+    public static AttributeInstance getNonNullAttribute(LivingEntity entity, Attribute type) {
+        Validate.notNull(entity);
+        Validate.notNull(type);
+
+        AttributeInstance attribute = entity.getAttribute(type);
+        Validate.notNull(attribute, "Attribute " + type.name() + " is not available for " + entity.getType().name());
+
+        return attribute;
     }
 }
