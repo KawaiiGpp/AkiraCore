@@ -3,9 +3,6 @@ package com.akira.core.api.util;
 import com.akira.core.api.AkiraPlugin;
 import com.akira.core.api.function.UnsafeRunnable;
 import org.apache.commons.lang3.Validate;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -88,61 +85,6 @@ public class CommonUtils {
         if (chance == 100) return true;
 
         return random.nextInt(100) < chance;
-    }
-
-    public static void ensureLegitLocation(Location location) {
-        Validate.notNull(location);
-        Validate.notNull(location.getWorld());
-
-        NumberUtils.ensureLegit(location.getX());
-        NumberUtils.ensureLegit(location.getY());
-        NumberUtils.ensureLegit(location.getZ());
-        NumberUtils.ensureLegit(location.getYaw());
-        NumberUtils.ensureLegit(location.getPitch());
-    }
-
-    public static String serializeLocation(Location location) {
-        Validate.notNull(location);
-        ensureLegitLocation(location);
-
-        StringBuilder builder = new StringBuilder();
-        World world = CommonUtils.requireNonNull(location.getWorld());
-
-        builder.append(world.getName()).append(',')
-                .append(location.getX()).append(',')
-                .append(location.getY()).append(',')
-                .append(location.getZ()).append(',')
-                .append(location.getYaw()).append(',')
-                .append(location.getPitch());
-
-        return builder.toString();
-    }
-
-    public static Location deserializeLocation(String raw) {
-        Validate.notNull(raw);
-
-        String[] rawArray = raw.split(",");
-        Validate.isTrue(rawArray.length == 6, "Incorrect format: " + raw);
-
-        try {
-            World world = Bukkit.getWorld(rawArray[0]);
-            double x = Double.parseDouble(rawArray[1]);
-            double y = Double.parseDouble(rawArray[2]);
-            double z = Double.parseDouble(rawArray[3]);
-            float yaw = Float.parseFloat(rawArray[4]);
-            float pitch = Float.parseFloat(rawArray[5]);
-
-            Validate.notNull(world);
-            NumberUtils.ensureLegit(x);
-            NumberUtils.ensureLegit(y);
-            NumberUtils.ensureLegit(z);
-            NumberUtils.ensureLegit(yaw);
-            NumberUtils.ensureLegit(pitch);
-
-            return new Location(world, x, y, z, yaw, pitch);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Failed parsing location: " + raw);
-        }
     }
 
     public static <T> List<T> getRandomElement(Collection<T> collection, int amount) {

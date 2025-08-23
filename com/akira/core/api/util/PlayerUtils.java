@@ -14,43 +14,22 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
 public class PlayerUtils {
-    public static void playSound(Player player, Sound sound, float pitch) {
+    public static void playSound(Player player, Sound sound, float volume, float pitch) {
         NumberUtils.ensureLegit(pitch);
+        NumberUtils.ensureNonNegative(volume);
         Validate.notNull(player);
         Validate.notNull(sound);
         Validate.isTrue(pitch >= 0.5F && pitch <= 2.0F);
 
-        World world = CommonUtils.requireNonNull(player.getLocation().getWorld());
-        world.playSound(player, sound, 1.0F, pitch);
+        player.playSound(player.getLocation(), sound, volume, pitch);
+    }
+
+    public static void playSound(Player player, Sound sound, float pitch) {
+        playSound(player, sound, 1.0F, pitch);
     }
 
     public static void playSound(Player player, Sound sound) {
         playSound(player, sound, 1.0F);
-    }
-
-    public static <T> void playEffect(Location location, Effect effect, T data) {
-        playEffect(location, effect, data, 64);
-    }
-
-    public static <T> void playEffect(Location location, Effect effect, T data, int radius) {
-        Validate.notNull(location);
-        Validate.notNull(effect);
-        Validate.isTrue(radius >= 0, "Radius cannot be lower than 0.");
-
-        World world = CommonUtils.requireNonNull(location.getWorld());
-        world.playEffect(location, effect, data, radius);
-    }
-
-    public static <T> void playEffect(Player player, Effect effect, T data, int radius) {
-        Validate.notNull(player);
-
-        playEffect(player.getLocation(), effect, data, radius);
-    }
-
-    public static <T> void playEffect(Player player, Effect effect, T data) {
-        Validate.notNull(player);
-
-        playEffect(player.getLocation(), effect, data);
     }
 
     public static boolean isLegitName(String name) {
