@@ -37,7 +37,7 @@ public class WorldUtils {
     }
 
     public static void playParticle(Location location, Particle particle, int amount, double oX, double oY, double oZ, Object data) {
-        playParticle(location, particle, amount, oX, oY, oZ, 0.0, data);
+        playParticle(location, particle, amount, oX, oY, oZ, 1.0, data);
     }
 
     public static void playParticle(Location location, Particle particle, int amount, double offset, Object data) {
