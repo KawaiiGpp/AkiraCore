@@ -25,7 +25,7 @@ public class PlayerUtils {
     }
 
     public static void playSound(Player player, Sound sound, float pitch) {
-        playSound(player, sound, 1.0F, pitch);
+        playSound(player, sound, 0.5F, pitch);
     }
 
     public static void playSound(Player player, Sound sound) {

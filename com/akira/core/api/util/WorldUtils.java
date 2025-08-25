@@ -16,7 +16,7 @@ public class WorldUtils {
     }
 
     public static void playSound(Location location, Sound sound, float pitch) {
-        playSound(location, sound, 1.0F, pitch);
+        playSound(location, sound, 0.5F, pitch);
     }
 
     public static void playSound(Location location, Sound sound) {
