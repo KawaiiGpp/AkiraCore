@@ -23,16 +23,21 @@ public class WorldUtils {
         playSound(location, sound, 1.0F);
     }
 
-    public static void playParticle(Location location, Particle particle, int amount, double oX, double oY, double oZ, Object data) {
+    public static void playParticle(Location location, Particle particle, int amount, double oX, double oY, double oZ, double ex, Object data) {
         Validate.notNull(location);
         Validate.notNull(particle);
         NumberUtils.ensurePositive(amount);
         NumberUtils.ensureLegit(oX);
         NumberUtils.ensureLegit(oY);
         NumberUtils.ensureLegit(oZ);
+        NumberUtils.ensureNonNegative(ex);
 
         World world = CommonUtils.requireNonNull(location.getWorld());
-        world.spawnParticle(particle, location, amount, oX, oY, oZ, data);
+        world.spawnParticle(particle, location, amount, oX, oY, oZ, ex, data);
+    }
+
+    public static void playParticle(Location location, Particle particle, int amount, double oX, double oY, double oZ, Object data) {
+        playParticle(location, particle, amount, oX, oY, oZ, 0.0, data);
     }
 
     public static void playParticle(Location location, Particle particle, int amount, double offset, Object data) {
