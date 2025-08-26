@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandHandler {
     private final String root;
@@ -56,7 +57,7 @@ public class CommandHandler {
                 .map(n -> n.getArguments()[lastIndex])
                 .filter(CommandArg::isLiteral)
                 .map(CommandArg::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public String getRoot() {
@@ -79,7 +80,7 @@ public class CommandHandler {
         return nodes.stream()
                 .filter(n -> n.getLimit().allow(sender))
                 .filter(n -> n.shouldSuggest(args))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private void registerHelpCommand() {
