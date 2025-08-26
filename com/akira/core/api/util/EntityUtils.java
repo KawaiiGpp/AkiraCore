@@ -9,7 +9,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class EntityUtils {
     public static double getMaxHealth(LivingEntity entity) {
@@ -50,23 +49,62 @@ public class EntityUtils {
         return createModifier(name, value, Operation.ADD_NUMBER);
     }
 
-    public static boolean removeModifier(LivingEntity entity, Attribute type, String name) {
+    public static void removeModifier(LivingEntity entity, Attribute type, String name) {
         Validate.notNull(entity);
         Validate.notNull(type);
         Validate.notNull(name);
 
-        UUID uniqueId = CommonUtils.createUniqueId(name);
-        AttributeInstance instance = getNonNullAttribute(entity, type);
-
-        Stream<AttributeModifier> stream = instance.getModifiers().stream();
-        AttributeModifier modifier = CommonUtils.singleMatch(stream,
-                m -> uniqueId.equals(m.getUniqueId()), false);
-
-        if (modifier != null) {
-            instance.removeModifier(modifier);
-            return true;
-        } else return false;
+        AttributeModifier modifier = getModifier(entity, type, name);
+        Validate.notNull(modifier, "Cannot find modifier " + name + " for " + type.name());
+        removeModifier(entity, type, modifier);
     }
 
+    public static void removeModifier(LivingEntity entity, Attribute type, UUID uniqueId) {
+        Validate.notNull(entity);
+        Validate.notNull(type);
+        Validate.notNull(uniqueId);
 
+        AttributeModifier modifier = getModifier(entity, type, uniqueId);
+        Validate.notNull(modifier, "Cannot find modifier " + uniqueId + " for " + type.name());
+        removeModifier(entity, type, modifier);
+    }
+
+    public static void removeModifier(LivingEntity entity, Attribute type, AttributeModifier modifier) {
+        Validate.notNull(entity);
+        Validate.notNull(type);
+        Validate.notNull(modifier);
+
+        getNonNullAttribute(entity, type).removeModifier(modifier);
+    }
+
+    public static void addModifier(LivingEntity entity, Attribute type, AttributeModifier modifier) {
+        Validate.notNull(entity);
+        Validate.notNull(type);
+        Validate.notNull(modifier);
+
+        getNonNullAttribute(entity, type).addModifier(modifier);
+    }
+
+    public static boolean hasModifier(LivingEntity entity, Attribute type, String name) {
+        return getModifier(entity, type, name) != null;
+    }
+
+    public static boolean hasModifier(LivingEntity entity, Attribute type, UUID uniqueId) {
+        return getModifier(entity, type, uniqueId) != null;
+    }
+
+    public static AttributeModifier getModifier(LivingEntity entity, Attribute type, String name) {
+        Validate.notNull(name);
+
+        return getModifier(entity, type, CommonUtils.createUniqueId(name));
+    }
+
+    public static AttributeModifier getModifier(LivingEntity entity, Attribute type, UUID uniqueId) {
+        Validate.notNull(entity);
+        Validate.notNull(type);
+        Validate.notNull(uniqueId);
+
+        return CommonUtils.singleMatch(getNonNullAttribute(entity, type).getModifiers().stream(),
+                modifier -> uniqueId.equals(modifier.getUniqueId()), false);
+    }
 }
