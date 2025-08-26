@@ -4,6 +4,7 @@ import com.akira.core.api.AkiraPlugin;
 import com.akira.core.api.function.UnsafeRunnable;
 import org.apache.commons.lang3.Validate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -102,5 +103,10 @@ public class CommonUtils {
         NumberUtils.ensureLegit(amount);
 
         return getRandomElement(Arrays.asList(array), amount);
+    }
+
+    public static UUID createUniqueId(String string) {
+        Validate.notNull(string);
+        return UUID.nameUUIDFromBytes(string.getBytes(StandardCharsets.UTF_8));
     }
 }
