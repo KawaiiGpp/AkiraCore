@@ -13,7 +13,7 @@ public class MetadataEditor {
     private final Plugin plugin;
     private final Metadatable owner;
 
-    public MetadataEditor(Plugin plugin, Metadatable owner) {
+    private MetadataEditor(Plugin plugin, Metadatable owner) {
         Validate.notNull(plugin);
         Validate.notNull(owner);
 
@@ -52,5 +52,12 @@ public class MetadataEditor {
         return owner.getMetadata(key)
                 .stream()
                 .anyMatch(value -> plugin.equals(value.getOwningPlugin()));
+    }
+
+    public static MetadataEditor create(Plugin plugin, Metadatable owner) {
+        Validate.notNull(plugin);
+        Validate.notNull(owner);
+
+        return new MetadataEditor(plugin, owner);
     }
 }
