@@ -17,11 +17,16 @@ public class EntityUtils {
         return getNonNullAttribute(entity, Attribute.GENERIC_MAX_HEALTH).getValue();
     }
 
-    public static void setMaxHealth(LivingEntity entity, double maxHealth) {
+    public static void setMaxHealth(LivingEntity entity, double maxHealth, boolean heal) {
         Validate.notNull(entity);
         NumberUtils.ensurePositive(maxHealth);
 
         getNonNullAttribute(entity, Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
+        if (heal) entity.setHealth(maxHealth);
+    }
+
+    public static void setMaxHealth(LivingEntity entity, double maxHealth) {
+        setMaxHealth(entity, maxHealth, true);
     }
 
     public static AttributeInstance getNonNullAttribute(LivingEntity entity, Attribute type) {
