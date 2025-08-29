@@ -7,6 +7,7 @@ import org.apache.commons.lang3.Validate;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -88,7 +89,7 @@ public class CommonUtils {
         return random.nextInt(100) < chance;
     }
 
-    public static <T> List<T> getRandomElement(Collection<T> collection, int amount) {
+    public static <T> List<T> getRandomElements(Collection<T> collection, int amount) {
         Validate.notNull(collection);
         NumberUtils.ensurePositive(amount);
 
@@ -98,11 +99,54 @@ public class CommonUtils {
         return arrayList.subList(0, Math.min(amount, arrayList.size()));
     }
 
-    public static <T> List<T> getRandomElement(T[] array, int amount) {
+    public static <T> List<T> getRandomElements(T[] array, int amount) {
         Validate.notNull(array);
-        NumberUtils.ensureLegit(amount);
+        NumberUtils.ensurePositive(amount);
 
-        return getRandomElement(Arrays.asList(array), amount);
+        return getRandomElements(Arrays.asList(array), amount);
+    }
+
+    public static <T> T getRandomElement(Collection<T> collection) {
+        Validate.notNull(collection);
+        Validate.isTrue(!collection.isEmpty(), "Cannot get anything from an empty collection.");
+
+        List<T> copiedList = new ArrayList<>(collection);
+        return copiedList.get(random.nextInt(copiedList.size()));
+    }
+
+    public static <T> T getRandomElement(T[] array) {
+        Validate.notNull(array);
+
+        return getRandomElement(Arrays.asList(array));
+    }
+
+    public static <T> T getWeightedRandomElement(Collection<T> collection, ToIntFunction<T> weightGetter) {
+        Validate.notNull(collection);
+        Validate.notNull(weightGetter);
+
+        int weightSum = collection.stream().mapToInt(e -> {
+            int weight = weightGetter.applyAsInt(e);
+            Validate.isTrue(weight > 0, "Weight is not greater than 0: " + e + " (" + weight + ")");
+            return weight;
+        }).sum();
+
+        int point = random.nextInt(weightSum) + 1;
+        int weightCounter = 0;
+
+        for (T element : collection) {
+            weightCounter += weightGetter.applyAsInt(element);
+
+            if (point <= weightCounter) return element;
+        }
+
+        throw new UnsupportedOperationException("Unreachable code executed.");
+    }
+
+    public static <T> T getWeightedRandomElement(T[] array, ToIntFunction<T> weightGetter) {
+        Validate.notNull(array);
+        Validate.notNull(weightGetter);
+
+        return getWeightedRandomElement(new ArrayList<>(Arrays.asList(array)), weightGetter);
     }
 
     public static UUID createUniqueId(String string) {
