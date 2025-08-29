@@ -5,10 +5,12 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class EntityUtils {
     public static double getMaxHealth(LivingEntity entity) {
@@ -111,5 +113,24 @@ public class EntityUtils {
 
         return CommonUtils.singleMatch(getNonNullAttribute(entity, type).getModifiers().stream(),
                 modifier -> uniqueId.equals(modifier.getUniqueId()), false);
+    }
+
+    public static boolean removeIf(Entity entity, Predicate<Entity> predicate) {
+        Validate.notNull(entity);
+        Validate.notNull(predicate);
+
+        if (!predicate.test(entity))
+            return false;
+
+        entity.remove();
+        return true;
+    }
+
+    public static boolean removeIfInvalid(Entity entity) {
+        return removeIf(entity, e -> !e.isValid());
+    }
+
+    public static boolean removeIfDead(Entity entity) {
+        return removeIf(entity, e -> !e.isValid() || e.isDead());
     }
 }
