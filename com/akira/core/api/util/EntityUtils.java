@@ -126,8 +126,8 @@ public class EntityUtils {
         return true;
     }
 
-    public static boolean removeIfInvalid(Entity entity) {
-        return removeIf(entity, e -> !e.isValid());
+    public static boolean removeIfValid(Entity entity) {
+        return removeIf(entity, Entity::isValid);
     }
 
     public static boolean removeIfDead(Entity entity) {
