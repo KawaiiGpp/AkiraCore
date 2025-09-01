@@ -79,6 +79,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setUnbreakable(boolean b) {
+        meta.setUnbreakable(b);
+        return this;
+    }
+
     public ItemStack getResult() {
         ItemStack result = item.clone();
 
